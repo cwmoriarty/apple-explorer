@@ -6,6 +6,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
+
+#ifndef S_IFMT
+#define S_IFMT  0170000
+#endif
+#ifndef S_IFDIR
+#define S_IFDIR 0040000
+#endif
+#ifndef S_IFREG
+#define S_IFREG 0100000
+#endif
+#ifndef S_IFLNK
+#define S_IFLNK 0120000
+#endif
 
 #ifndef ENOTSUP
 #ifdef EOPNOTSUPP
