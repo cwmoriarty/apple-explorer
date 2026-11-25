@@ -312,7 +312,7 @@ int main(int argc, char **argv) {
             size_t got = 0;
             rc = aex_read(fs, ino, off, sizeof(buf), buf, &got);
             if (rc != 0 || got == 0) break;
-            fwrite(buf, 1U, got, stdout);
+            if (fwrite(buf, 1U, got, stdout) != got) { rc = -EIO; break; }
             off += got;
         }
         aex_close(fs);

@@ -537,9 +537,9 @@ int main(void) {
 
         FILE *dfp = fopen(dmg_path, "wb");
         assert(dfp != NULL);
-        fwrite(img, 1U, sz, dfp);
-        fwrite(xml, 1U, (size_t)xlen, dfp);
-        fwrite(koly, 1U, 512U, dfp);
+        assert(fwrite(img, 1U, sz, dfp) == sz);
+        assert(fwrite(xml, 1U, (size_t)xlen, dfp) == (size_t)xlen);
+        assert(fwrite(koly, 1U, 512U, dfp) == 512U);
         fclose(dfp);
 
         aex_probe_info_t pinfo;
@@ -574,9 +574,13 @@ int main(void) {
         fclose(pf);
 
         FILE *b0 = fopen("test_tm_tmp.sparsebundle/bands/0", "wb");
-        fwrite(img, 1U, 16384U, b0); fclose(b0);
+        assert(b0 != NULL);
+        assert(fwrite(img, 1U, 16384U, b0) == 16384U);
+        fclose(b0);
         FILE *b1 = fopen("test_tm_tmp.sparsebundle/bands/1", "wb");
-        fwrite(img + 16384U, 1U, 16384U, b1); fclose(b1);
+        assert(b1 != NULL);
+        assert(fwrite(img + 16384U, 1U, 16384U, b1) == 16384U);
+        fclose(b1);
 
         aex_probe_info_t pinfo;
         assert(aex_probe_path(sb_dir, NULL, &pinfo) == 0);

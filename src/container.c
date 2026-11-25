@@ -1290,10 +1290,14 @@ static int extract_node(aex_t *fs, uint64_t ino, const char *dest_path, int dept
         if (aex_readlink(fs, ino, target, sizeof(target), &tlen) == 0) {
 #ifdef _WIN32
             FILE *fp = fopen(dest_path, "wb");
-            if (fp) { fwrite(target, 1U, strlen(target), fp); fclose(fp); }
+            if (fp) {
+                size_t wl = strlen(target);
+                if (fwrite(target, 1U, wl, fp) != wl) { /* best-effort symlink stub */ }
+                fclose(fp);
+            }
 #else
-            (void)unlink(dest_path);
-            (void)symlink(target, dest_path);
+            if (unlink(dest_path) != 0) { /* ignore missing target */ }
+            if (symlink(target, dest_path) != 0) { /* best-effort symlink */ }
 #endif
         }
         return 0;
