@@ -1,0 +1,5 @@
+build/
+*.tar.gz
+*.zip
+.DS_Store
+*.dSYM/
