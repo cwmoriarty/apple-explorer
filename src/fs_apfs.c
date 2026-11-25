@@ -499,7 +499,10 @@ static int snap_meta_cb(
                 memcpy(se->short_date, dt, dlen);
                 se->short_date[dlen] = '\0';
             } else {
-                snprintf(se->short_date, sizeof(se->short_date), "%.*s", (int)(sizeof(se->short_date) - 1U), se->name);
+                size_t dlen = strlen(se->name);
+                if (dlen >= sizeof(se->short_date)) dlen = sizeof(se->short_date) - 1U;
+                memcpy(se->short_date, se->name, dlen);
+                se->short_date[dlen] = '\0';
             }
         }
     }
