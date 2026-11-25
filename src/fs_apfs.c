@@ -204,6 +204,10 @@ static int omap_lookup(
             free(nbuf);
             return 0;
         } else { /* Index node -> value is paddr_t (8 bytes) */
+            if (val_end - voff + 8U > bsz) {
+                free(nbuf);
+                return -EINVAL;
+            }
             cur_paddr = aex_le64(nbuf + (val_end - voff));
         }
     }

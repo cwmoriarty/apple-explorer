@@ -218,7 +218,7 @@ static int lookup_overflow_extents(
             got != hp->ext_node_size) break;
         if ((int8_t)nbuf[8] != -1) break;
         uint16_t nrecs = aex_be16(nbuf + 10U);
-        for (uint16_t r = 0; r < nrecs; r++) {
+        for (uint16_t r = 0; r < nrecs && 14U + 2U * ((size_t)r + 1U) <= hp->ext_node_size; r++) {
             uint16_t roff = aex_be16(nbuf + hp->ext_node_size - 2U * (r + 1U));
             if (roff < 14U || roff + 12U > hp->ext_node_size) continue;
             if (!hp->is_classic) {
@@ -263,7 +263,7 @@ static int lookup_hfsplus_xattr(
             got != hp->att_node_size) break;
         if ((int8_t)nbuf[8] != -1) break;
         uint16_t nrecs = aex_be16(nbuf + 10U);
-        for (uint16_t r = 0; r < nrecs; r++) {
+        for (uint16_t r = 0; r < nrecs && 14U + 2U * ((size_t)r + 1U) <= hp->att_node_size; r++) {
             uint16_t roff = aex_be16(nbuf + hp->att_node_size - 2U * (r + 1U));
             if (roff < 14U || roff + 14U > hp->att_node_size) continue;
             uint16_t klen = aex_be16(nbuf + roff);
@@ -346,7 +346,7 @@ static int load_catalog_leaves(hfs_priv_t *hp, char *vol_name_out, size_t vol_na
         if ((int8_t)nbuf[8] != -1) break;
         uint16_t nrecs = aex_be16(nbuf + 10U);
 
-        for (uint16_t r = 0; r < nrecs; r++) {
+        for (uint16_t r = 0; r < nrecs && 14U + 2U * ((size_t)r + 1U) <= hp->cat_node_size; r++) {
             uint16_t roff = aex_be16(nbuf + hp->cat_node_size - 2U * (r + 1U));
             if (roff < 14U || roff + 10U >= hp->cat_node_size) continue;
 
