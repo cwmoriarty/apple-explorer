@@ -376,8 +376,8 @@ static int load_catalog_leaves(hfs_priv_t *hp, char *vol_name_out, size_t vol_na
                     it.atime = it.mtime;
                     it.mode = S_IFDIR | 0755;
                     it.nlink = 2U;
-                    if (it.cnid == 2U && vol_name_out && !vol_name_out[0]) {
-                        snprintf(vol_name_out, vol_name_cap, "%s", it.name);
+                    if (it.cnid == 2U && vol_name_out && vol_name_cap > 0U && !vol_name_out[0]) {
+                        snprintf(vol_name_out, vol_name_cap, "%.*s", (int)(vol_name_cap - 1U), it.name);
                     }
                 } else { /* HFSCatalogFile (102 bytes) */
                     if (data_off + 98U > hp->cat_node_size) continue;
@@ -435,8 +435,8 @@ static int load_catalog_leaves(hfs_priv_t *hp, char *vol_name_out, size_t vol_na
                     it.mode = aex_be16(val + 42U);
                     if ((it.mode & S_IFMT) == 0) it.mode = S_IFDIR | 0755;
                     it.nlink = aex_be32(val + 4U) + 2U;
-                    if (it.cnid == 2U && vol_name_out) {
-                        snprintf(vol_name_out, vol_name_cap, "%s", it.name);
+                    if (it.cnid == 2U && vol_name_out && vol_name_cap > 0U) {
+                        snprintf(vol_name_out, vol_name_cap, "%.*s", (int)(vol_name_cap - 1U), it.name);
                     }
                     if (parent_id == 2U && is_private_dir_data_u16(u16, nchars)) {
                         hp->priv_dir_data_cnid = it.cnid;

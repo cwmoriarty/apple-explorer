@@ -97,10 +97,10 @@ check-fuzz: | $(BUILD)
 MINGW_CC ?= x86_64-w64-mingw32-gcc
 win32-portable:
 	mkdir -p $(BUILD)/win32-portable
-	$(MINGW_CC) $(CPPFLAGS) -O2 -Wall -Wextra -std=c11 -static \
+	$(MINGW_CC) $(CPPFLAGS) -O2 -Wall -Wextra -Wno-format-truncation -std=c11 -static \
 		$(LIB_SRCS) win32/apple_explorer_win_mount.c tools/apple_explorer_cli.c \
 		-lole32 -luuid -o $(BUILD)/win32-portable/apple-explorer.exe
-	$(MINGW_CC) $(CPPFLAGS) -O2 -Wall -Wextra -std=c11 -static -mwindows \
+	$(MINGW_CC) $(CPPFLAGS) -O2 -Wall -Wextra -Wno-format-truncation -std=c11 -static -mwindows \
 		$(LIB_SRCS) win32/apple_explorer_gui.c \
 		-lcomctl32 -lcomdlg32 -lshell32 -lole32 -lgdi32 -luuid \
 		-o $(BUILD)/win32-portable/AppleExplorer.exe
